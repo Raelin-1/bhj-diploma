@@ -18,13 +18,12 @@ class Sidebar {
    * при нажатии на кнопку .sidebar-toggle
    * */
   static initToggleButton() {
-    const sidebarMini = document.querySelector('.sidebar-mini');
-    const switchSidebar = document.querySelector('.sidebar-toggle');
-    switchSidebar.addEventListener('click', (e) => {
+    let body = document.querySelector(".skin-blue");
+    document.querySelector(".sidebar-toggle").addEventListener("click", (e) => {
       e.preventDefault();
-      sidebarMini.classList.toggle('.sidebar-open');
-      sidebarMini.classList.toggle('.sidebar-collapse');
-    })
+      body.classList.toggle("sidebar-open");
+      body.classList.toggle("sidebar-collapse");
+    });
   }
 
   /**
@@ -35,29 +34,22 @@ class Sidebar {
    * выходу устанавливает App.setState( 'init' )
    * */
   static initAuthLinks() {
-    const regBtn = document.querySelector('.menu-item_register');
-    const loginBtn = document.querySelector('.menu-item_login');
-    const logoutBtn = document.querySelector('.menu-item_logout');
-
-    regBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const modal = App.getModal('register');
-      modal.open();
-    });
-
-    loginBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const modal = App.getModal('login');
-      modal.open();
-    });
-
-    logoutBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      User.logout({}, (err, response) => {
-        if (response.success) {
-        App.setState('init');
+    let menuItem = Array.from(document.querySelectorAll(".menu-item"));
+    menuItem.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        switch (e.target.closest("li").classList[1]) {
+          case "menu-item_login":
+            App.getModal("login").open();
+            break;
+          case "menu-item_register":
+            App.getModal("register").open();
+            break;
+          case "menu-item_logout":
+            User.logout((response) => App.setState("init"));
+            break;
         }
       });
-    })
+    });
   }
 }
