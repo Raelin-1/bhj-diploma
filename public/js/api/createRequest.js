@@ -28,10 +28,8 @@ const createRequest = (options = {}) => {
         options.callback(err, null)
       }
       xhr.responseType = "json"
-      xhr.addEventListener("readystatechange", function () {
-        if (xhr.status === 200 && xhr.readyState === xhr.DONE) {
+      xhr.addEventListener("load", function () {
           options.callback(null, xhr.response)
-        }
       })
     }
   }

@@ -10,7 +10,6 @@ class CreateTransactionForm extends AsyncForm {
   constructor(element) {
     super(element);
     this.renderAccountsList();
-    //?...?//
     this.element = element;
   }
 
@@ -24,13 +23,12 @@ class CreateTransactionForm extends AsyncForm {
     const data = User.current();
     Account.list(data, (err, response) => {
       if (response.success) {
-        response.data.forEach((element) => {
-          accList.insertAdjacentHTML(
-            "beforeend",
-            `<option value="${element.id}">${element.name}</option>`
-          );
-        });
-      }
+        const optionsHTML = response.data.reduce((acc, element) => {
+          return acc + `<option value="${element.id}">${element.name}</option>`;
+        }, "");
+  
+        accList.innerHTML = optionsHTML;
+        }
     });
   }
 
